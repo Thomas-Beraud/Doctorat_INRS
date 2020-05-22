@@ -175,9 +175,10 @@ def get_axis_range(x,y,z,max_range,med_range,min_range,dip,azimuth,x_c,y_c,z_c,s
     b = (coords_local[1]/med_range)**2
     c = (coords_local[2]/min_range)**2
 
-    
-    if (a+b+c)<=1 :
+    value = 0
 
+    if (a+b+c)<=1 :
+        
         if model == "gaussian":
 
             value = (sill-(a*gaussian(sill,nugget,max_range,coords_local[0])+
@@ -233,6 +234,19 @@ def weighted_updating_vector(x_obs,y_obs,z_obs,max_range,med_range,min_range,azi
     plot : True or False
             
     """
+
+
+    if (azimuth < 0 or azimuth > 2*np.pi) :
+        print ("\033[1m \033[91m Error : Azimuth should be in radian between 0 and 2 pi \n \033[0m")
+
+    if (dip < -np.pi/2 or dip > np.pi/2):
+        print ("\033[1m \033[91m Error : Dip should be in radian between -pi/2 and pi/2 \n \033[0m")
+
+    if not(vario_type == "gaussian" or vario_type == "shperical" or vario_type == "exponential"):
+        print ("\033[1m \033[91m Error : Wrong variogram model, should be gaussian, spherical or exponential \n \033[0m")
+
+
+
     index_x_in_data=6
     index_y_in_data=7
     index_z_in_data=8
