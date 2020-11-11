@@ -3,7 +3,7 @@ import os
 import numpy as np
 from subprocess import call
 import multiprocessing as mp
-    
+
 def call_saltflow(sim):
 
 
@@ -55,19 +55,18 @@ f.close()
 
 
 if __name__ == '__main__':
-    
 
-       
-    
-    pool = mp.Pool(90)
-    
-    
-    sim = np.arange(0,15,1)
+
+
+
+    pool = mp.Pool(15)
+
+
+    sim = np.arange(0,90,1)
     # Make the Pool of workers
-    
+
     result = pool.imap_unordered(call_saltflow, sim)
-    
+
     # Close the pool and wait for the work to finish
     pool.close()
     pool.join()
-
