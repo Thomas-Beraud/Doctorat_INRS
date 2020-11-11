@@ -1,0 +1,20 @@
+ 777   614                     ISEEDH, ISEEDG first seeds for H and G (choose a random number for ISEEDH)
+ 64    64     64              NFULL   nodal dimensions of full field (must be a power of 2 i.e. 2^n)
+ 41   41      21            NTRUNC  nodal dimensions of truncated field (true element dimensions of domain = NX-1, NY-1)
+ 2.5   2.5    1           SSTEP   spatial step size (delta X, Y, Z)
+ -10    -10.                HMEAN,GMEAN   mean of H,G = ln(geom. mean, m/s)
+ 1.2     0.25                HVAR,GVAR    variance of H,G
+ 0.0   0.0                     HNUG,GNUG    nugget of H,G
+   2                           ITYPE   power spectrum type (1=gaussian, 2=exp. cov)
+   2                           ICROSS  cross spectrum type (1=lin, 2=+ X-spec, -2=- X-spec, 3=user)
+ 0.00                          COHER   coherency sq (use COHER>0.0 for ICROSS=1)
+ 15   10.   3.00           HLAMDA  correlation lengths Hx,Hy,Hz (at least 4(dx),4dy,4dz), metres
+ 10.00   1.   1.00           GLAMDA  ................... G (ignored if ICROSS=1)
+ -0.1                          ASLOPE  slope linear X-spectrum (ignored if ICROSS.NE.1)
+ 0.0    0.0    0.0             DELAY   delay vector for G relative to H
+ F                             DOGFLD
+ 1      0                      IPSCRN,ICAUTO
+ 0      1                      IWBIN,IWASC
+ 1                             NFOUT(# of output files)
+ 1                             MFOUT() (print third realization)
+ 1                             NREAL (# of realizations)

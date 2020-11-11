@@ -1,0 +1,3 @@
+Title="Mass Balance in kg over each time step",
+variables="time","source mass","tmassold","aqmass","sorbm","total_mass","wellmass","flxrt","errorkg","error%"
+          zone i=999

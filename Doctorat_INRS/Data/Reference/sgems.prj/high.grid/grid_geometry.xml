@@ -1,0 +1,10 @@
+<!DOCTYPE gridGeometry>
+<Grid type="Point_set" name="high">
+ <Geometry size="85"/>
+ <Properties>
+  <GsTLGridProperty filepath="properties/property__ln_permea.sgems" type="Continuous" name="ln_permea"/>
+  <GsTLGridProperty filepath="properties/property__ln_permeagauss.sgems" type="Continuous" name="ln_permeagauss"/>
+ </Properties>
+ <Regions/>
+ <PropertyGroups/>
+</Grid>
