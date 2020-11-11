@@ -265,23 +265,23 @@ class EnsembleKalmanFilter_Emerick():
                   ):
 
 
-        self.m_ = ensemble_matrix.shape[0]
-        self.N_ = ensemble_matrix.shape[1]
-        self.p_ = measurements_vector.shape[0]
-        self.Ef_ = ensemble_matrix
-        self.Ea_ = np.zeros((ensemble_matrix.shape))
-        self.y_ = measurements_vector
-        self.hE_ = np.zeros((self.p_,self.N_))
-        self.alpha_ = alpha
-        self.Cd_ = np.zeros((self.m_,self.m_))
-        self.measurements_error_percent_ = measurements_error_percent
-        self.display_ = show_parameters
+        self.m = ensemble_matrix.shape[0]
+        self.N = ensemble_matrix.shape[1]
+        self.p = measurements_vector.shape[0]
+        self.Ef = ensemble_matrix
+        self.Ea = np.zeros((ensemble_matrix.shape))
+        self.y = measurements_vector
+        self.hE = np.zeros((self.p,self.N))
+        self.alpha = alpha
+        self.Cd = np.zeros((self.m,self.m))
+        self.measurements_error_percent = measurements_error_percent
+        self.display = show_parameters
 
         if show_parameters :
             print("#----- Ensemble Kalman Filter -----#\n"+
-            "Number of ensemble : %.0f" % (self.N_)+"\n"+
-            "Number of parameter : %.0f" % (self.m_)+"\n"+
-            "Number of measurements : %.0f" % (self.p_)+"\n"+
+            "Number of ensemble : %.0f" % (self.N)+"\n"+
+            "Number of parameter : %.0f" % (self.m)+"\n"+
+            "Number of measurements : %.0f" % (self.p)+"\n"+
             "Standard Deviation of observations : %.6f" % np.sqrt(np.var(observations_vector,dtype=np.float64)) +"\n"+
             "#----------------------------------#\n")
 
@@ -292,30 +292,30 @@ class EnsembleKalmanFilter_Emerick():
         # TODO sampling function to select grid parameter cell for observation
 
 
-        (self.Cd_, self.D_)  = Measurements(measurements_vector,
-                          self.measurements_error_percent_,
-                          self.N_,
-                          alpha=self.alpha_,
+        (self.Cd, self.D)  = Measurements(measurements_vector,
+                          self.measurements_error_percent,
+                          self.N,
+                          alpha=self.alpha,
                           show_stats=show_parameters,
                           show_cov_matrix=show_parameters)
 
 
 
-        self.hE_ = observations_vector
+        self.hE = observations_vector
 
 
 
     def analysis_step(self):
 
-        mu = np.mean(self.Ef_,1) # Computation of the ensemble mean
+        mu = np.mean(self.Ef,1) # Computation of the ensemble mean
 
-        A  = self.Ef_ - mu # Computation of the ensemble anomaly,
+        A  = self.Ef - mu # Computation of the ensemble anomaly,
                            # individual deviation from the mean in each cell of each simulation
 
-        hx = np.repeat(np.matrix(np.mean(self.hE_,1)).T,self.N_,axis=1) # Computation of the observed data mean
+        hx = np.repeat(np.matrix(np.mean(self.hE,1)).T,self.N,axis=1) # Computation of the observed data mean
 
 
-        Y  = self.hE_- hx # Computation of the observed anomaly
+        Y  = self.hE- hx # Computation of the observed anomaly
 
         import numpy.linalg as nla
 
@@ -325,13 +325,13 @@ class EnsembleKalmanFilter_Emerick():
         C_predamp = ( Y.T @ Y)
 
 
-        C  =  ( Y.T @ Y +( np.eye(self.N_)*(self.N_-1))*np.var(self.y_)*self.alpha_ ) *1.01 #inflation factor
+        C  =  ( Y.T @ Y +( np.eye(self.N)*(self.N-1))*np.var(self.y)*self.alpha ) *1.01 #inflation factor
 
         #np.save("invert_matrix",C)
 
         YC = mrdiv(Y,C)
 
-        if self.display_ :
+        if self.display :
             plt.figure(figsize=(12,8))
             plt.imshow(Y,aspect='auto')
             plt.colorbar()
@@ -359,11 +359,11 @@ class EnsembleKalmanFilter_Emerick():
 
         KG = A @ YC.T
 
-        self.dE = (KG @ ( self.D_ - self.hE_ ))
+        self.dE = (KG @ ( self.D - self.hE ))
 
-        self.Ea_   = self.Ef_ + self.dE
+        self.Ea   = self.Ef + self.dE
 
-        if self.display_ :
+        if self.display :
 
             plt.figure(figsize=(12,8))
             plt.imshow(KG,aspect='auto')

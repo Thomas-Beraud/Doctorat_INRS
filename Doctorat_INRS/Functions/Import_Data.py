@@ -52,66 +52,66 @@ def import_permeability_field(filename,ensemble_number, cells_3d_model) :
 
     return np.matrix(k_ensemble.T)
 
-    
+
 class Well():
     def __init__(self, name, size, x, y, z):
 
-        self.name_ = name
-        self.size_ = size
-        self.time_ = np.zeros(size)
-        self.data_ = np.zeros(size)
-        self.x_ = x
-        self.y_ = y
-        self.z_ = z
+        self.name = name
+        self.size = size
+        self.time = np.zeros(size)
+        self.data = np.zeros(size)
+        self.x = x
+        self.y = y
+        self.z = z
 
 
     def set_data(self,data,time):
-        if len(data) == self.size_ :
-            self.data_ = data
-        if len(time) == self.size_ :
-            self.time_ = time
+        if len(data) == self.size :
+            self.data = data
+        if len(time) == self.size :
+            self.time = time
         else :
-            print("Your value array size is different than the one defining this well \nYour data array should be of size : "+str(self.size_)+" ")
+            print("Your value array size is different than the one defining this well \nYour data array should be of size : "+str(self.size)+" ")
 
     def set_data_index(self,data,time,index):
-        if self.size_ >= index :
-            self.data_[index] = data
-            self.time_[index] = time
+        if self.size >= index :
+            self.data[index] = data
+            self.time[index] = time
         else :
-            print("Your index is greater than the array size. Max index : "+str(self.size_)+" ")
+            print("Your index is greater than the array size. Max index : "+str(self.size)+" ")
 
     def show_well_description(self) :
-        print("Name : "+str(self.name_)+"")
-        print("Size : "+str(self.size_)+"")
-        print("X : "+str(self.x_)+"")
-        print("Y : "+str(self.y_)+"")
-        print("Z : "+str(self.z_)+"")
+        print("Name : "+str(self.name)+"")
+        print("Size : "+str(self.size)+"")
+        print("X : "+str(self.x)+"")
+        print("Y : "+str(self.y)+"")
+        print("Z : "+str(self.z)+"")
 
     def show_well_data(self) :
-        print(self.time_,self.data_)
+        print(self.time,self.data)
 
     def get_well_description(self) :
-        return(self.name_,self.size_,self.x_,self.y_,self.z_)
+        return(self.name,self.size,self.x,self.y,self.z)
 
     def get_well_data(self) :
-        return(self.time_,self.data_)
+        return(self.time,self.data)
 
     def plot(self):
         plt.figure(figsize=(5,3))
 
-        plt.plot(self.time_,self.data_, 'r', label='Measured',linewidth=3)
+        plt.plot(self.time,self.data, 'r', label='Measured',linewidth=3)
 
         plt.xlabel('Time (days)',fontsize=16)
         plt.ylabel('Concentration (g/l)',fontsize=16)
 
 
-        plt.xlim(0,max(self.time_))
-        plt.ylim(0,1.1*max(self.data_))
+        plt.xlim(0,max(self.time))
+        plt.ylim(0,1.1*max(self.data))
         plt.legend(fontsize=16)
 
 
 
-        plt.title(self.name_+" \n x:"+str(self.x_)+" y:"+str(self.y_)+" z:"+str(self.z_),fontsize=20)
+        plt.title(self.name+" \n x:"+str(self.x)+" y:"+str(self.y)+" z:"+str(self.z),fontsize=20)
         #plt.axvline(x=time[250])
         #plt.axvline(x=time[375])
 
@@ -128,17 +128,17 @@ class Measures():
     def __init__(self, path):
         f = open(path,'r')
 
-        self.nbr_obs_points_ = int(f.readline().partition(';')[0])
+        self.nbr_obs_points = int(f.readline().partition(';')[0])
 
-        self.wells_ = [Well for i in range(self.nbr_obs_points_)]
-        for i in range(self.nbr_obs_points_):
+        self.wells = [Well for i in range(self.nbr_obs_points)]
+        for i in range(self.nbr_obs_points):
             name = f.readline().partition(';')[0]
             size = int(f.readline().partition(';')[0])
             x = float(f.readline().partition(';')[0])
             y = float(f.readline().partition(';')[0])
             z = float(f.readline().partition(';')[0])
 
-            self.wells_[i] = Well(name, size, x, y, z)
+            self.wells[i] = Well(name, size, x, y, z)
 
             temp_data = np.zeros(size)
             temp_time = np.zeros(size)
@@ -149,7 +149,7 @@ class Measures():
                 temp_time[j] = temp[0]
                 #temp_data[j] = np.(f.readline())
 
-            self.wells_[i].set_data(temp_data,temp_time)
+            self.wells[i].set_data(temp_data,temp_time)
 
         f.close()
 
@@ -164,12 +164,12 @@ class Observation():
     def __init__(self, path):
         f = open(path,'r')
 
-        self.nbr_obs_points_ = int(f.readline().partition(';')[0])
-        self.ensemble_size_ = int(f.readline().partition(';')[0])
+        self.nbr_obs_points = int(f.readline().partition(';')[0])
+        self.ensemble_size = int(f.readline().partition(';')[0])
 
-        self.wells_ = [[Well for j in range(self.ensemble_size_)] for i in range(self.nbr_obs_points_)]
+        self.wells = [[Well for j in range(self.ensemble_size)] for i in range(self.nbr_obs_points)]
 
-        for i in range(self.nbr_obs_points_):
+        for i in range(self.nbr_obs_points):
             name = f.readline().partition(';')[0]
             size = int(f.readline().partition(';')[0])
             x = float(f.readline().partition(';')[0])
@@ -177,15 +177,15 @@ class Observation():
             z = float(f.readline().partition(';')[0])
 
             for k in range(size):
-                temp_data = np.fromstring(f.readline(), float,self.ensemble_size_+1, sep=',')
+                temp_data = np.fromstring(f.readline(), float,self.ensemble_size+1, sep=',')
                 # Index 0 contain the time stamp
 
-                for j in range(self.ensemble_size_):
+                for j in range(self.ensemble_size):
                     if k ==0 :
 
-                        self.wells_[i][j] = Well(name, size, x, y, z)
-                        self.wells_[i][j].set_data_index(temp_data[j+1], temp_data[0],  k)
+                        self.wells[i][j] = Well(name, size, x, y, z)
+                        self.wells[i][j].set_data_index(temp_data[j+1], temp_data[0],  k)
                     else :
-                        self.wells_[i][j].set_data_index(temp_data[j+1], temp_data[0],  k)
+                        self.wells[i][j].set_data_index(temp_data[j+1], temp_data[0],  k)
 
         f.close()
