@@ -299,16 +299,8 @@ class EnsembleKalmanFilter_Emerick():
                           show_stats=show_parameters,
                           show_cov_matrix=show_parameters)
 
-        """
-        H = Observation_Matrix(vector_of_cell_observation,
-                               number_of_grid_cell,
-                               show_parameters)
 
-        # hE Predicted value in the model observed at the same localisation as the direct measurement
 
-         self.hE_ = H.T @ self.Ef_ # In this case the observed parameter are directly coming from my model, no forward
-                                  # at this stage
-        """
         self.hE_ = observations_vector
 
 
@@ -335,7 +327,7 @@ class EnsembleKalmanFilter_Emerick():
 
         C  =  ( Y.T @ Y +( np.eye(self.N_)*(self.N_-1))*np.var(self.y_)*self.alpha_ ) *1.01 #inflation factor
 
-        np.save("invert_matrix",C)
+        #np.save("invert_matrix",C)
 
         YC = mrdiv(Y,C)
 
