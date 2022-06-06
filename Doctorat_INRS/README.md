@@ -9,3 +9,6 @@ This repo contains the developments of my PhD
 - A way to assign a weight in function of different geological properties / region / stationnarity
 
 - Tools to assist the interface between FeFlow (and every x,y,z format parameters input for simulation process) and Ensemble Method Assimilation
+
+
+All the documentation is available on this page : https://thomas-beraud.github.io/FEFLOW_MDA_MPMW.github.io/
