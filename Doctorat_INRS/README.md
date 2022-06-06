@@ -1,6 +1,6 @@
 # Doctorat_INRS
 
-This repo contains incoming development of my PhD
+This repo contains the developments of my PhD
 
 - Ensemble Assimilation Method applied to environnemental and hydrogeological studies
 
